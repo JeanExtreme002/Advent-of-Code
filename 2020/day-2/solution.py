@@ -10,7 +10,7 @@ with open("input.txt") as file:
 
 for line in data:
 
-    n1, n2, letter, password = re.split(pattern, line.strip())[1: -1]
+    n1, n2, letter, password = re.findall(pattern, line)[0]
     n1, n2 = int(n1), int(n2)
 
     if n1 <= password.count(letter) <= n2:
