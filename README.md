@@ -1,5 +1,5 @@
 # Advent-of-Code
-This repository contains the solutions I created for the Advent of Code challenges in Python.
+This repository contains the solutions I created for the Advent of Code's challenges in Python.
 
 > [Advent of Code](https://adventofcode.com/) is an Advent calendar of small programming puzzles for a variety of skill sets and skill <br>
 levels that can be solved in any programming language you like. People use them as a speed contest, <br>
