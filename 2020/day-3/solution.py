@@ -1,7 +1,7 @@
 def get_count(array, value, step_x = 1, step_y = 1):
 
     """
-    Return the number of times a value appears in a 2D array.
+    Return the number of times a value appears in a matrix.
     """
 
     x, count = 0, 0

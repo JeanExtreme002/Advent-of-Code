@@ -1,7 +1,7 @@
-def decode(code, rows, cols):
+def decode_seat_code(code, rows, cols):
 
     """
-    Decode sent code and return its position.
+    Decode seat code and return its position.
     """
 
     # Get lists of rows and columns.
@@ -16,19 +16,23 @@ def decode(code, rows, cols):
         elif char == "L": cols = cols[: round(len(cols) / 2)]  # Left  (first : half)
         elif char == "R": cols = cols[round(len(cols) / 2) :]  # Right (half  : last)
 
-    # Return position of sent.
+    # Return position of seat.
     return rows[0], cols[0]
 
-def get_sent_id(row, col):
+def get_seat_id(row, col):
 
-    # Get position of sent and return its Sent ID.
+    # Get position of seat and return its Seat ID.
     return row * 8 + col
 
 # Get data from file.
 with open("input.txt") as file:
     data = file.readlines()
 
-highest_sent_id = ("", 0, 0, 0)
+# Create a matrix of free seats.
+seats = [[0 for i in range(8)] for r in range(128)]
+
+# Seat with the highest ID (first part).
+first_part_seat = ("", 0, 0, 0)
 
 # Check each code in data list.
 for code in data:
@@ -36,13 +40,30 @@ for code in data:
     # Clear the code.
     code = code.strip().replace("\n", "")
 
-    # Get position of sent and its ID.
-    row, col = decode(code, 128, 8)
-    sent_id = get_sent_id(row, col)
+    # Get position of seat and its ID.
+    row, col = decode_seat_code(code, len(seats), len(seats[0]))
+    seat_id = get_seat_id(row, col)
 
-    # Check if the Sent ID is higher than the previous ones.
-    if sent_id > highest_sent_id[-1]:
-        highest_sent_id = (code, row, col, sent_id)
+    # Check if the Seat ID is higher than the previous ones.
+    if seat_id > first_part_seat[-1]:
+        first_part_seat = (code, row, col, seat_id)
 
-# Show the result.
-print("First Part: Code {} | Pos [{}, {}] | Sent ID {} ".format(*highest_sent_id))
+    # Add seat to seats list.
+    seats[row][col] = 1
+
+# Check each row and column of the matrix.
+for y in range(len(seats)):
+    for x in range(len(seats[0])):
+
+        # Check whether the seat is free and at the correct distance from other seats.
+        try:
+            if not seats[y][x] and seats[y - 1][x] and seats[y + 1][x] and seats[y][x - 1] and seats[y][x + 1]:
+                second_part_seat = (y, x, get_seat_id(y, x))
+                break
+
+        # Even if an IndexError occurs, it will continue to search for the correct seat.
+        except IndexError: continue
+
+# Show the results.
+print("First Part: Code {} | Pos [{}, {}] | Seat ID {} ".format(*first_part_seat))
+print("Second Part: Code {} | Pos [{}, {}] | Seat ID {}".format("-" * 10, *second_part_seat))
