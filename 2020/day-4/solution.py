@@ -33,6 +33,7 @@ def parse_passport(string):
     return passport
 
 def validate_fields(passport):
+    
     """
     Validate the values ​​of each passport field.
 
