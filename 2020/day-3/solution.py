@@ -6,7 +6,7 @@ def get_count(array, value, step_x = 1, step_y = 1):
 
     x, count = 0, 0
 
-    # Get size of list.
+    # Get size of the list.
     height , width = len(array), len(array[0])
 
     # Go through each row of the array.

@@ -10,7 +10,7 @@ second_part_count = 0
 with open("input.txt") as file:
     data = file.readlines()
 
-# Check each password in data list.
+# Check each password in the list of passwords.
 for line in data:
 
     # Separate the data from the string with regular expression.

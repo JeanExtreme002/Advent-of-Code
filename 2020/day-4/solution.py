@@ -33,7 +33,7 @@ def parse_passport(string):
     return passport
 
 def validate_fields(passport):
-    
+
     """
     Validate the values ​​of each passport field.
 
@@ -85,7 +85,7 @@ with open("input.txt") as file:
 first_part_count = 0
 second_part_count = 0
 
-# Validate each passport in the data list.
+# Validate each passport in the list of passports.
 for passport in data:
 
     # First validation (has all required fields).

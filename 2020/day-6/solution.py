@@ -1,6 +1,6 @@
 def get_chars(from_ = "a", to = "z"):
 
-    # Return characters list.
+    # Return a list of characters.
     return [chr(i) for i in range(ord(from_), ord(to) + 1)]
 
 def get_answers_count(group):

@@ -34,7 +34,7 @@ seats = [[0 for i in range(8)] for r in range(128)]
 # Seat with the highest ID (first part).
 first_part_seat = ("", 0, 0, 0)
 
-# Check each code in data list.
+# Check each code in the list of codes.
 for code in data:
 
     # Clear the code.
@@ -48,7 +48,7 @@ for code in data:
     if seat_id > first_part_seat[-1]:
         first_part_seat = (code, row, col, seat_id)
 
-    # Add seat to seats list.
+    # Add seat to the list of seats.
     seats[row][col] = 1
 
 # Check each row and column of the matrix.
