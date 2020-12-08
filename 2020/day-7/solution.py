@@ -53,7 +53,7 @@ def unpack_content(content):
 
     # Separate each item into a list.
     content = content.replace("bags", "").split(",")
-    content = list(map(lambda s: s.strip().split(" ", maxsplit = 1), content))
+    content = list(map(lambda s: s.strip().split(maxsplit = 1), content))
 
     # Unpack the items.
     for bag in content:
