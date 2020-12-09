@@ -1,36 +1,47 @@
-def acc(value, current_instruction, accumulator):
+def cmd_acc(current_instruction, value, accumulator):
 
     # Increase or decrease the accumulator.
     return current_instruction + 1, accumulator + value
 
-def jmp(value, current_instruction, accumulator):
+def cmd_jmp(current_instruction, value, accumulator = 0):
 
     # Jump to a new instruction.
     return current_instruction + value, accumulator
 
-def nop(value, current_instruction, accumulator):
+def cmd_nop(current_instruction, value = 0, accumulator = 0):
 
     # Do nothing.
     return current_instruction + 1, accumulator
 
-# Get data from file.
-with open("input.txt") as file:
-    data = file.readlines()
+def execute(instruction, script, accumulator = 0):
 
-accumulator, current_instruction, log = 0, 0, []
-instructions = {"acc": acc, "jmp": jmp, "nop": nop}
-
-# Run while there are still instructions.
-while current_instruction != len(data) and not current_instruction in log:
+    # Dictionary with functions for each command.
+    instructions = {"acc": cmd_acc, "jmp": cmd_jmp, "nop": cmd_nop}
 
     # Separate the command and the value.
-    command, value = data[current_instruction].strip().split()
+    command, value = script[instruction].strip().split()
+    return instructions[command](instruction, int(value), accumulator)
+
+# Get data from file.
+with open("input.txt") as file:
+    data = list(map(lambda s: s.replace("\n", ""), file.readlines()))
+
+accumulator, current_instruction, log = 0, 0, []
+
+# Run while there are still instructions.
+while current_instruction != len(data):
 
     # Add instruction index to the log.
     log.append(current_instruction)
 
     # Executes the instruction and get the next instruction and a new value for accumulator.
-    current_instruction, accumulator = instructions[command](int(value), current_instruction, accumulator)
+    new_instruction, accumulator = execute(current_instruction, data, accumulator)
 
-# Show the results
-print("First Part: Accumulator - {} | Command - \"{} {}\" | Line - {}".format(accumulator, command, value, current_instruction))
+    # Checks whether the new instruction has already been executed.
+    if new_instruction in log: break
+
+    # Change the current instruction.
+    current_instruction = new_instruction
+
+# Show the result.
+print("First Part: Accumulator - {} | Line - {}".format(accumulator, current_instruction + 1))
