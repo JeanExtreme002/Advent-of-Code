@@ -6,8 +6,8 @@ def get_count(array, value, step_x = 1, step_y = 1):
 
     x, count = 0, 0
 
-    # Get size of the list.
-    height , width = len(array), len(array[0])
+    # Get the size of the list.
+    height, width = len(array), len(array[0])
 
     # Go through each row of the array.
     for y in range(0, height, step_y):
@@ -24,7 +24,7 @@ def get_count(array, value, step_x = 1, step_y = 1):
 
 # Get data from file.
 with open("input.txt") as file:
-    data = list(map(str.strip, file.readlines()))
+    data = [line.strip() for line in file.readlines()]
 
 slopes = ((1, 1), (3, 1), (5, 1), (7, 1), (1, 2))
 final_result = 1

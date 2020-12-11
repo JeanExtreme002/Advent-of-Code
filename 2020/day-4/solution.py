@@ -2,14 +2,20 @@ import re
 
 def has_fields(passport):
 
-    # Check whether all required fields are in the passport.
+    """
+    Check whether all required fields are in the passport.
+    """
+
     for field in ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]:
         if not field in passport: return False
     return True
 
 def has_only(string, chars):
 
-    # Check whether the string contains only the specified characters.
+    """
+    Check whether the string contains only the specified characters.
+    """
+    
     for char in string:
         if not char in chars: return False
     return True

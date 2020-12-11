@@ -10,8 +10,12 @@ second_part_combinations = get_combinations(data, 3)
 
 # Look for the two numbers that add up to 2020.
 for numbers in first_part_combinations:
-    if sum(numbers) == 2020: print("First Part: {}".format(numbers[0] * numbers[1]))
+    if sum(numbers) == 2020:
+        print("First Part: {}".format(numbers[0] * numbers[1]))
+        break
 
 # Look for the three numbers that add up to 2020.
 for numbers in second_part_combinations:
-    if sum(numbers) == 2020: print("Second Part: {}".format(numbers[0] * numbers[1] * numbers[2]))
+    if sum(numbers) == 2020:
+        print("Second Part: {}".format(numbers[0] * numbers[1] * numbers[2]))
+        break

@@ -1,76 +1,88 @@
-def get_outermost_bag_colors(rules, content_colors, found = set()):
+def get_bag_colors_count(rules, content_colors, all_found = []):
 
     """
-    Return the colors of bags available for content in the given colors.
+    Return the number of bag colors available for contents in the given colors.
     """
 
-    bag_colors = set()
+    found = []
 
     for content_color in content_colors:
 
         # Check each bag color rule.
         for rule in rules:
-            color, content = rule.split("contain")
+            color, content = split_rule(rule)
 
             # Check whether the bag can contain a bag in the given color.
-            if content_color in content and not color in found:
-                bag_colors.add(color.replace("bags", "").strip())
+            if content_color in content and not color in all_found + found:
 
-    # If there are more results, the function will be called again, passing the results as an argument.
-    if bag_colors.difference(found):
-        found.update(bag_colors)
-        return bag_colors.union(get_outermost_bag_colors(rules, bag_colors, found))
-
-    # Return an empty Set if there are no more results.
-    else: return set()
-
-def get_bag_content_count(rules, bag_colors):
-
-    bags = []
-
-    for bag_color in bag_colors:
-
-        # Check each bag color rule.
-        for rule in rules:
-            color, content = rule.replace(".", "").split("contain")
-
-            # If the bag color is the same, the contents it can contain
-            # will be unpacked in a list of bags.
-            if bag_color in color:
-                content = unpack_content(content)
-                bags.extend(content)
+                # Add color to the list.
+                found.append(color)
+                all_found.append(color)
 
     # If there were results, the function will be called again, passing the results as an argument.
-    return [] if not bags else bags + get_bag_content_count(rules, bags)
+    return len(found) + (get_bag_colors_count(rules, found, all_found) if found else 0)
 
-def unpack_content(content):
+def get_individual_bag_count(rules, bag_color):
 
     """
-    Unpack the content into a list of bags.
+    Return the number of individual bags inside a bag.
     """
 
     bags = []
 
-    # Separate each item into a list.
-    content = content.replace("bags", "").split(",")
-    content = list(map(lambda s: s.strip().split(maxsplit = 1), content))
+    # Check each bag color rule.
+    for rule in rules:
+        color, content = split_rule(rule)
 
-    # Unpack the items.
-    for bag in content:
-        if not "no" in bag[0]: bags += [bag[1].replace("bags", "")] * int(bag[0])
+        # Check if the color is correct and get the contents of the bag.
+        if bag_color in color:
+            bags += split_content(content)
+            break
 
-    # Return list of bags.
+    # Multiply the amount of content by the number of bags of a type of color and return the sum of all bags.
+    # Calculation: For each bag found -> n(bag) + n(bag) * n(content).
+    return sum([bag[0] + bag[0] * get_individual_bag_count(rules, bag[1]) for bag in bags]) if bags else 0
+
+def split_content(content):
+
+    """
+    Split the rule into a list of bags.
+    """
+
+    bags = []
+
+    # Return an empty list if there is no content.
+    if "no other" in content: return bags
+
+    # Separate each type of bag.
+    for bag in content.replace("bags", "").replace("bag", "").split(","):
+
+        # Separate the number of bags and the color.
+        n, color = bag.strip().split(maxsplit = 1)
+        bags.append([int(n), color])
+
     return bags
+
+def split_rule(rule):
+
+    """
+    Split a rule in color and content.
+    """
+
+    color, content = rule.replace(".", "").split("contain")
+    color = color.replace("bags", "").replace("bag", "").strip()
+
+    return color, content
 
 # Get data from file.
 with open("input.txt") as file:
     data = file.readlines()
 
-search = ["shiny gold"]
+search = "shiny gold"
 
 # Get the number of outermost bag colors and individual bags that can be inside the main bag.
-first_part_count = len(get_outermost_bag_colors(data, search))
-second_part_count = len(get_bag_content_count(data, search))
+first_part_count = get_bag_colors_count(data, [search])
+second_part_count = get_individual_bag_count(data, search)
 
 # Show the results.
 print("First Part: {} bag colors are available.".format(first_part_count))

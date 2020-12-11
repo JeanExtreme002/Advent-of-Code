@@ -1,6 +1,9 @@
 def get_chars(from_ = "a", to = "z"):
 
-    # Return a list of characters.
+    """
+    Return a list of characters.
+    """
+
     return [chr(i) for i in range(ord(from_), ord(to) + 1)]
 
 def get_answers_count(group):
@@ -20,6 +23,10 @@ def get_answers_count(group):
     return answers_count
 
 def get_people_count(group):
+
+    """
+    Return the number of people in a group.
+    """
 
     # Separate people from the group.
     people = group.split("\n")
