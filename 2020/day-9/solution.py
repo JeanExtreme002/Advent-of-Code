@@ -34,7 +34,7 @@ def validate(numbers, index, range_):
 
 # Get data from file.
 with open("input.txt") as file:
-    data = [int(n) for n in file.readlines()]
+    data = [int(line) for line in file.readlines()]
 
 preamble = 25
 
